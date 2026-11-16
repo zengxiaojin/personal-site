@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(null, null)}"></head>
+<body>
+
+<header th:replace="~{fragments/layout :: header('home')}"></header>
+
+<main class="page">
+
+	<!-- 自我介绍 -->
+	<section class="intro">
+		<img th:if="${avatarUrl != null}" class="avatar" th:src="@{${avatarUrl}}" th:alt="${profile.name}" width="72" height="72">
+		<span th:if="${avatarUrl == null}" class="avatar avatar--text" aria-hidden="true"
+		      th:text="${#strings.substring(profile.name, 0, 1)}">曾</span>
+		<h1 class="intro__title" th:text="#{home.greeting(${profile.name})}">你好，我是曾进。</h1>
+		<p class="intro__text" th:text="${profile.intro}">自我介绍</p>
+	</section>
+
+	<!-- 近况 -->
+	<section class="block" th:if="${now != null}">
+		<div class="now-card">
+			<p class="label">
+				<span th:text="#{home.now.label}">近况</span>
+				·
+				<time th:datetime="${@dates.iso(now.entry.createdAt)}"
+				      th:text="${@dates.yearMonth(now.entry.createdAt)}">2026年11月</time>
+			</p>
+			<div class="prose prose--compact" th:utext="${now.html}">近况内容</div>
+		</div>
+		<p class="more"><a class="link-arrow" th:href="@{/now}" th:text="#{home.now.more}">以前的近况</a></p>
+	</section>
+
+	<!-- 最近的文章 -->
+	<section class="block" th:if="${!#lists.isEmpty(posts)}">
+		<h2 class="label" th:text="#{home.posts.label}">最近的文章</h2>
+		<ul class="rows">
+			<li th:each="post : ${posts}">
+				<a class="row" th:href="@{/posts/{slug}(slug=${post.slug})}">
+					<time class="row__meta" th:datetime="${@dates.iso(post.publishedAt)}"
+					      th:text="${@dates.date(post.publishedAt)}">2026.11.16</time>
+					<span class="row__title" th:text="${post.title}">文章标题</span>
+				</a>
+			</li>
+		</ul>
+		<p class="more"><a class="link-arrow" th:href="@{/posts}" th:text="#{home.posts.more}">全部文章</a></p>
+	</section>
+
+	<!-- 作品 -->
+	<section class="block" th:if="${!#lists.isEmpty(works)}">
+		<h2 class="label" th:text="#{home.works.label}">做过的东西</h2>
+		<ul class="cards">
+			<li th:each="work : ${works}">
+				<a class="card" th:href="@{/works/{slug}(slug=${work.slug})}">
+					<span class="card__title" th:text="${work.title}">作品名</span>
+					<span class="card__text" th:text="${work.summary}">一句话说明</span>
+					<span class="card__meta" th:text="${work.year}">2026</span>
+				</a>
+			</li>
+		</ul>
+		<p class="more"><a class="link-arrow" th:href="@{/works}" th:text="#{home.works.more}">全部作品</a></p>
+	</section>
+
+	<!-- 历程 -->
+	<section class="block" th:if="${!#lists.isEmpty(journey)}">
+		<h2 class="label" th:text="#{home.journey.label}">历程</h2>
+		<ul class="rows">
+			<li th:each="entry : ${journey}">
+				<div class="row">
+					<span class="row__meta" th:text="${entry.year}">2026</span>
+					<span class="row__title" th:text="${entry.title}">发生了什么</span>
+				</div>
+			</li>
+		</ul>
+		<p class="more"><a class="link-arrow" th:href="@{/journey}" th:text="#{home.journey.more}">完整的历程</a></p>
+	</section>
+
+	<!-- 喜欢的东西 -->
+	<section class="block" th:if="${!#lists.isEmpty(likes)}">
+		<h2 class="label" th:text="#{home.likes.label}">喜欢的东西</h2>
+		<ul class="rows">
+			<li th:each="item : ${likes}">
+				<div class="row">
+					<span class="row__meta" th:text="${item.category}">类别</span>
+					<span class="row__title" th:text="${item.title}">名字</span>
+				</div>
+			</li>
+		</ul>
+		<p class="more"><a class="link-arrow" th:href="@{/likes}" th:text="#{home.likes.more}">全部</a></p>
+	</section>
+
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

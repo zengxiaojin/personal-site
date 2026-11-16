@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${work.title}, ${work.summary})}"></head>
+<body>
+
+<header th:replace="~{fragments/layout :: header('works')}"></header>
+
+<main class="page">
+
+	<article>
+		<header class="article__header">
+			<h1 class="article__title" th:text="${work.title}">作品名</h1>
+			<p class="article__lead" th:text="${work.summary}">一句话说明</p>
+			<p class="article__meta">
+				<span th:text="${work.year}">2026</span>
+				<a class="link-arrow" th:if="${!#strings.isEmpty(work.siteUrl)}" th:href="${work.siteUrl}"
+				   rel="noopener" th:text="#{works.site}">查看作品</a>
+				<a class="link-arrow" th:if="${!#strings.isEmpty(work.repoUrl)}" th:href="${work.repoUrl}"
+				   rel="noopener" th:text="#{works.repo}">源代码</a>
+			</p>
+		</header>
+		<div class="prose" th:utext="${bodyHtml}">详细介绍</div>
+	</article>
+
+	<p class="more more--page"><a class="link-back" th:href="@{/works}" th:text="#{works.back}">全部作品</a></p>
+
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+# 所有环境共用的配置。
+# 本地专用的在 application-local.yml，线上专用的在 application-prod.yml。
+
+server:
+  # 云平台（Cloud Run 等）通过环境变量 PORT 指定端口
+  port: ${PORT:8080}
+  compression:
+    enabled: true
+
+spring:
+  application:
+    name: personal-site
+
+  profiles:
+    # 没有指定环境时按本地开发处理；线上通过 SPRING_PROFILES_ACTIVE=prod 切换
+    default: local
+
+  # 页面上的文字放在 messages.properties 里
+  messages:
+    basename: messages
+    fallback-to-system-locale: false
+
+  web:
+    # 目前只有中文版。以后加日文、英文时，改成按网址切换语言
+    locale: zh_CN
+    locale-resolver: fixed
+    resources:
+      # CSS 等静态文件的网址里带上内容的哈希值，文件一改网址就变，
+      # 所以可以放心让浏览器长期缓存
+      chain:
+        strategy:
+          content:
+            enabled: true
+            paths: /**
+      cache:
+        cachecontrol:
+          max-age: 365d
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.jince.site.entity
+  configuration:
+    # 数据库的 published_at 对应 Java 的 publishedAt
+    map-underscore-to-camel-case: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        # 只开放健康检查，供云平台确认网站是否正常
+        include: health
+
+app:
+  site:
+    # 网站的正式地址，用于 RSS 里的链接
+    base-url: ${SITE_BASE_URL:http://localhost:8080}
+    # 显示日期时使用的时区
+    time-zone: Asia/Tokyo

@@ -1,0 +1,12 @@
+# 本地开发专用。这里的账号密码只在自己电脑上有效，线上不会读取这个文件。
+
+spring:
+  docker:
+    compose:
+      # 启动网站时自动启动 compose.yaml 里的数据库；网站停止后数据库继续运行，下次启动更快
+      lifecycle-management: start-only
+
+app:
+  admin:
+    username: admin
+    password: local-dev-only-2026

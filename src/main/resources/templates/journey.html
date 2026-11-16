@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(#{journey.title}, null)}"></head>
+<body>
+
+<header th:replace="~{fragments/layout :: header('journey')}"></header>
+
+<main class="page">
+
+	<h1 class="page-title" th:text="#{journey.title}">历程</h1>
+
+	<p class="empty" th:if="${journeyByYear.isEmpty()}" th:text="#{journey.empty}">还没有记录。</p>
+
+	<!-- 按年份分组 -->
+	<section class="block block--first" th:each="group : ${journeyByYear}">
+		<h2 class="label" th:text="${group.key}">2026</h2>
+		<ul class="rows">
+			<li th:each="entry : ${group.value}">
+				<div class="row row--top">
+					<span class="row__meta"
+					      th:text="${entry.month != null} ? #{journey.month(${entry.month})} : ''">11月</span>
+					<div class="row__body">
+						<span class="row__title" th:text="${entry.title}">发生了什么</span>
+						<span class="row__note" th:if="${!#strings.isEmpty(entry.description)}"
+						      th:text="${entry.description}">补充说明</span>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</section>
+
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

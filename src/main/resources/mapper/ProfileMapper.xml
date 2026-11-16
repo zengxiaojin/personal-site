@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jince.site.mapper.ProfileMapper">
+
+	<select id="find" resultType="Profile">
+		SELECT id, name, intro, about_md, email, github_url, updated_at
+		FROM profile
+		WHERE id = 1
+	</select>
+
+	<update id="update">
+		UPDATE profile
+		SET name = #{name},
+		    intro = #{intro},
+		    about_md = #{aboutMd},
+		    email = #{email},
+		    github_url = #{githubUrl},
+		    updated_at = now()
+		WHERE id = 1
+	</update>
+
+</mapper>

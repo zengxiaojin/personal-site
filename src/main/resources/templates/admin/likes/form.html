@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head(${id == null} ? '添加喜欢的东西' : '编辑喜欢的东西')}"></head>
+<body>
+
+<header th:replace="~{admin/layout :: header('likes')}"></header>
+
+<main class="admin-page admin-page--narrow">
+
+	<div class="admin-title">
+		<h1 th:text="${id == null} ? '添加喜欢的东西' : '编辑喜欢的东西'">添加喜欢的东西</h1>
+	</div>
+
+	<form th:action="${id == null} ? @{/admin/likes} : @{/admin/likes/{id}(id=${id})}"
+	      th:object="${form}" method="post" class="form" novalidate>
+
+		<p th:replace="~{admin/layout :: error-summary}"></p>
+
+		<div class="field-row">
+			<div class="field">
+				<label for="category">类别</label>
+				<input type="text" th:field="*{category}" th:errorclass="is-invalid" maxlength="50" placeholder="书">
+				<p class="field__hint">同一类别的会显示在一起，例如「书」「电影」「地方」。</p>
+				<p class="field__error" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">错误提示</p>
+			</div>
+			<div class="field">
+				<label for="sortOrder">排序数字</label>
+				<input type="number" th:field="*{sortOrder}" th:errorclass="is-invalid" inputmode="numeric">
+				<p class="field__hint">同一类别里，数字小的排在前面。</p>
+				<p class="field__error" th:if="${#fields.hasErrors('sortOrder')}" th:errors="*{sortOrder}">错误提示</p>
+			</div>
+		</div>
+
+		<div class="field">
+			<label for="title">名字</label>
+			<input type="text" th:field="*{title}" th:errorclass="is-invalid" maxlength="200">
+			<p class="field__error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">错误提示</p>
+		</div>
+
+		<div class="field">
+			<label for="note">一句话感想（可以不填）</label>
+			<textarea th:field="*{note}" th:errorclass="is-invalid" rows="3" maxlength="500"></textarea>
+			<p class="field__error" th:if="${#fields.hasErrors('note')}" th:errors="*{note}">错误提示</p>
+		</div>
+
+		<div class="field">
+			<label for="url">相关网址（可以不填）</label>
+			<input type="url" th:field="*{url}" th:errorclass="is-invalid" maxlength="500" placeholder="https://">
+			<p class="field__error" th:if="${#fields.hasErrors('url')}" th:errors="*{url}">错误提示</p>
+		</div>
+
+		<div class="form__actions">
+			<button type="submit" class="button button--primary">保存</button>
+			<a th:href="@{/admin/likes}">取消</a>
+		</div>
+
+	</form>
+
+</main>
+
+</body>
+</html>

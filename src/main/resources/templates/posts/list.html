@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(#{posts.title}, null)}"></head>
+<body>
+
+<header th:replace="~{fragments/layout :: header('posts')}"></header>
+
+<main class="page">
+
+	<h1 class="page-title" th:text="#{posts.title}">文章</h1>
+
+	<p class="empty" th:if="${postsByYear.isEmpty()}" th:text="#{posts.empty}">还没有文章。</p>
+
+	<!-- 按年份分组 -->
+	<section class="block block--first" th:each="group : ${postsByYear}">
+		<h2 class="label" th:text="${group.key}">2026</h2>
+		<ul class="rows">
+			<li th:each="post : ${group.value}">
+				<a class="row" th:href="@{/posts/{slug}(slug=${post.slug})}">
+					<time class="row__meta" th:datetime="${@dates.iso(post.publishedAt)}"
+					      th:text="${@dates.monthDay(post.publishedAt)}">11.16</time>
+					<span class="row__title" th:text="${post.title}">文章标题</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

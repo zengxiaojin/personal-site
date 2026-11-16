@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jince.site.mapper.WorkMapper">
+
+	<sql id="columns">
+		id, slug, title, summary, body_md, site_url, repo_url, year, sort_order, created_at, updated_at
+	</sql>
+
+	<select id="findAll" resultType="Work">
+		SELECT <include refid="columns"/>
+		FROM works
+		ORDER BY sort_order, year DESC, id DESC
+	</select>
+
+	<select id="findTop" resultType="Work">
+		SELECT <include refid="columns"/>
+		FROM works
+		ORDER BY sort_order, year DESC, id DESC
+		LIMIT #{limit}
+	</select>
+
+	<select id="findBySlug" resultType="Work">
+		SELECT <include refid="columns"/>
+		FROM works
+		WHERE slug = #{slug}
+	</select>
+
+	<select id="findById" resultType="Work">
+		SELECT <include refid="columns"/>
+		FROM works
+		WHERE id = #{id}
+	</select>
+
+	<select id="countBySlug" resultType="int">
+		SELECT COUNT(*)
+		FROM works
+		WHERE slug = #{slug}
+		<if test="excludeId != null">
+			AND id &lt;&gt; #{excludeId}
+		</if>
+	</select>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT INTO works (slug, title, summary, body_md, site_url, repo_url, year, sort_order)
+		VALUES (#{slug}, #{title}, #{summary}, #{bodyMd}, #{siteUrl}, #{repoUrl}, #{year}, #{sortOrder})
+	</insert>
+
+	<update id="update">
+		UPDATE works
+		SET slug = #{slug},
+		    title = #{title},
+		    summary = #{summary},
+		    body_md = #{bodyMd},
+		    site_url = #{siteUrl},
+		    repo_url = #{repoUrl},
+		    year = #{year},
+		    sort_order = #{sortOrder},
+		    updated_at = now()
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM works
+		WHERE id = #{id}
+	</delete>
+
+</mapper>

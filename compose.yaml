@@ -1,0 +1,21 @@
+# 本地开发用的数据库。运行 ./mvnw spring-boot:run 时会自动启动。
+# 这里的账号密码只用于本地开发。
+
+# 明确写出项目名。不写的话 Docker 会用文件夹名，文件夹名是中文时会报错
+name: personal-site
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: personal_site
+      POSTGRES_USER: personal_site
+      POSTGRES_PASSWORD: personal_site_dev
+    ports:
+      # 用数据库工具连接时：localhost:15432
+      - "15432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:

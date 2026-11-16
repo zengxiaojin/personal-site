@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head('历程')}"></head>
+<body>
+
+<header th:replace="~{admin/layout :: header('journey')}"></header>
+
+<main class="admin-page">
+
+	<div class="admin-title">
+		<h1>历程</h1>
+		<a class="button button--primary" th:href="@{/admin/journey/new}">添加一件事</a>
+	</div>
+
+	<p th:replace="~{admin/layout :: flash}"></p>
+
+	<p class="empty" th:if="${#lists.isEmpty(entries)}">还没有记录。</p>
+
+	<div class="table-wrap" th:if="${!#lists.isEmpty(entries)}">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>时间</th>
+					<th>发生了什么</th>
+					<th class="table__actions">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="entry : ${entries}">
+					<td class="table__nowrap"
+					    th:text="${entry.month != null} ? ${entry.year + '年' + entry.month + '月'} : ${entry.year + '年'}">2026年11月</td>
+					<td>
+						<a th:href="@{/admin/journey/{id}/edit(id=${entry.id})}" th:text="${entry.title}">发生了什么</a>
+						<span class="table__sub" th:if="${!#strings.isEmpty(entry.description)}"
+						      th:text="${entry.description}">补充说明</span>
+					</td>
+					<td class="table__actions">
+						<a th:href="@{/admin/journey/{id}/edit(id=${entry.id})}">编辑</a>
+						<form th:action="@{/admin/journey/{id}/delete(id=${entry.id})}" method="post" class="inline-form"
+						      onsubmit="return confirm('确定删除这条记录吗？删除后无法恢复。')">
+							<button type="submit" class="button button--text button--danger">删除</button>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+</main>
+
+</body>
+</html>

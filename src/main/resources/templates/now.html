@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(#{now.title}, null)}"></head>
+<body>
+
+<header th:replace="~{fragments/layout :: header('now')}"></header>
+
+<main class="page">
+
+	<h1 class="page-title" th:text="#{now.title}">近况</h1>
+
+	<p class="empty" th:if="${now == null}" th:text="#{now.empty}">还没有写近况。</p>
+
+	<!-- 最新的一条 -->
+	<section th:if="${now != null}">
+		<p class="label">
+			<time th:datetime="${@dates.iso(now.entry.createdAt)}"
+			      th:text="#{now.updated(${@dates.date(now.entry.createdAt)})}">更新于 2026.11.16</time>
+		</p>
+		<div class="prose" th:utext="${now.html}">近况内容</div>
+	</section>
+
+	<!-- 以前的存档 -->
+	<section class="block" th:if="${archive != null and !archive.isEmpty()}">
+		<h2 class="label" th:text="#{now.archive}">以前的近况</h2>
+		<ul class="rows">
+			<li th:each="past : ${archive}">
+				<div class="row row--top">
+					<time class="row__meta" th:datetime="${@dates.iso(past.entry.createdAt)}"
+					      th:text="${@dates.date(past.entry.createdAt)}">2026.08.01</time>
+					<div class="row__body prose prose--compact" th:utext="${past.html}">以前的内容</div>
+				</div>
+			</li>
+		</ul>
+	</section>
+
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

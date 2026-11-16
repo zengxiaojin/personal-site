@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head(${id == null} ? '更新近况' : '编辑近况')}"></head>
+<body>
+
+<header th:replace="~{admin/layout :: header('now')}"></header>
+
+<main class="admin-page admin-page--narrow">
+
+	<div class="admin-title">
+		<h1 th:text="${id == null} ? '更新近况' : '编辑近况'">更新近况</h1>
+	</div>
+
+	<form th:action="${id == null} ? @{/admin/now} : @{/admin/now/{id}(id=${id})}"
+	      th:object="${form}" method="post" class="form" novalidate>
+
+		<p th:replace="~{admin/layout :: error-summary}"></p>
+
+		<div class="field">
+			<label for="bodyMd">内容</label>
+			<textarea th:field="*{bodyMd}" th:errorclass="is-invalid" rows="10" class="textarea--mono"></textarea>
+			<p class="field__hint">用 Markdown 书写。每行以「- 」开头就是一个列表项，例如「- 在学：Spring Boot」。</p>
+			<p class="field__error" th:if="${#fields.hasErrors('bodyMd')}" th:errors="*{bodyMd}">错误提示</p>
+		</div>
+
+		<div class="form__actions">
+			<button type="submit" class="button button--primary">保存</button>
+			<a th:href="@{/admin/now}">取消</a>
+		</div>
+
+	</form>
+
+</main>
+
+</body>
+</html>

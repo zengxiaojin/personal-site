@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${post.title}, ${post.summary})}"></head>
+<body>
+
+<header th:replace="~{fragments/layout :: header('posts')}"></header>
+
+<main class="page">
+
+	<article>
+		<header class="article__header">
+			<h1 class="article__title" th:text="${post.title}">文章标题</h1>
+			<p class="article__meta">
+				<time th:datetime="${@dates.iso(post.publishedAt)}"
+				      th:text="${@dates.date(post.publishedAt)}">2026.11.16</time>
+			</p>
+		</header>
+		<div class="prose" th:utext="${bodyHtml}">正文</div>
+	</article>
+
+	<p class="more more--page"><a class="link-back" th:href="@{/posts}" th:text="#{posts.back}">全部文章</a></p>
+
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

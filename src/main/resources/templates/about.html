@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(#{about.title}, null)}"></head>
+<body>
+
+<header th:replace="~{fragments/layout :: header('about')}"></header>
+
+<main class="page">
+
+	<h1 class="page-title" th:text="#{about.title}">关于</h1>
+
+	<div class="prose" th:utext="${aboutHtml}">关于我的介绍</div>
+
+	<section class="block"
+	         th:if="${!#strings.isEmpty(profile.email) or !#strings.isEmpty(profile.githubUrl)}">
+		<h2 class="label" th:text="#{about.contact}">联系方式</h2>
+		<ul class="rows">
+			<li th:if="${!#strings.isEmpty(profile.email)}">
+				<a class="row" th:href="${'mailto:' + profile.email}">
+					<span class="row__meta" th:text="#{footer.mail}">邮件</span>
+					<span class="row__title" th:text="${profile.email}">name@example.com</span>
+				</a>
+			</li>
+			<li th:if="${!#strings.isEmpty(profile.githubUrl)}">
+				<a class="row" th:href="${profile.githubUrl}" rel="me noopener">
+					<span class="row__meta">GitHub</span>
+					<span class="row__title" th:text="${profile.githubUrl}">https://github.com/name</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

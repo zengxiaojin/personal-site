@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head(${id == null} ? '添加作品' : '编辑作品')}"></head>
+<body>
+
+<header th:replace="~{admin/layout :: header('works')}"></header>
+
+<main class="admin-page admin-page--narrow">
+
+	<div class="admin-title">
+		<h1 th:text="${id == null} ? '添加作品' : '编辑作品'">添加作品</h1>
+	</div>
+
+	<form th:action="${id == null} ? @{/admin/works} : @{/admin/works/{id}(id=${id})}"
+	      th:object="${form}" method="post" class="form" novalidate>
+
+		<p th:replace="~{admin/layout :: error-summary}"></p>
+
+		<div class="field">
+			<label for="title">名字</label>
+			<input type="text" th:field="*{title}" th:errorclass="is-invalid" maxlength="200">
+			<p class="field__error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">错误提示</p>
+		</div>
+
+		<div class="field">
+			<label for="slug">网址名</label>
+			<input type="text" th:field="*{slug}" th:errorclass="is-invalid" maxlength="100"
+			       placeholder="my-first-app" autocapitalize="none" spellcheck="false">
+			<p class="field__hint">作品的网址会是「/works/网址名」。只能用小写英文字母、数字和连字符。</p>
+			<p class="field__error" th:if="${#fields.hasErrors('slug')}" th:errors="*{slug}">错误提示</p>
+		</div>
+
+		<div class="field">
+			<label for="summary">一句话说明</label>
+			<textarea th:field="*{summary}" th:errorclass="is-invalid" rows="2" maxlength="300"></textarea>
+			<p class="field__error" th:if="${#fields.hasErrors('summary')}" th:errors="*{summary}">错误提示</p>
+		</div>
+
+		<div class="field-row">
+			<div class="field">
+				<label for="year">制作年份</label>
+				<input type="number" th:field="*{year}" th:errorclass="is-invalid" inputmode="numeric">
+				<p class="field__error" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">错误提示</p>
+			</div>
+			<div class="field">
+				<label for="sortOrder">排序数字</label>
+				<input type="number" th:field="*{sortOrder}" th:errorclass="is-invalid" inputmode="numeric">
+				<p class="field__hint">数字小的排在前面。</p>
+				<p class="field__error" th:if="${#fields.hasErrors('sortOrder')}" th:errors="*{sortOrder}">错误提示</p>
+			</div>
+		</div>
+
+		<div class="field">
+			<label for="siteUrl">作品的网址（可以不填）</label>
+			<input type="url" th:field="*{siteUrl}" th:errorclass="is-invalid" maxlength="500" placeholder="https://">
+			<p class="field__error" th:if="${#fields.hasErrors('siteUrl')}" th:errors="*{siteUrl}">错误提示</p>
+		</div>
+
+		<div class="field">
+			<label for="repoUrl">源代码的网址（可以不填）</label>
+			<input type="url" th:field="*{repoUrl}" th:errorclass="is-invalid" maxlength="500" placeholder="https://github.com/">
+			<p class="field__error" th:if="${#fields.hasErrors('repoUrl')}" th:errors="*{repoUrl}">错误提示</p>
+		</div>
+
+		<div class="field">
+			<label for="bodyMd">详细介绍（可以不填）</label>
+			<textarea th:field="*{bodyMd}" th:errorclass="is-invalid" rows="16" class="textarea--mono"></textarea>
+			<p class="field__hint">用 Markdown 书写。可以写：为什么做、怎么做的、遇到了什么问题、学到了什么。</p>
+			<p class="field__error" th:if="${#fields.hasErrors('bodyMd')}" th:errors="*{bodyMd}">错误提示</p>
+		</div>
+
+		<div class="form__actions">
+			<button type="submit" class="button button--primary">保存</button>
+			<a th:href="@{/admin/works}">取消</a>
+		</div>
+
+	</form>
+
+</main>
+
+</body>
+</html>

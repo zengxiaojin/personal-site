@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head(${id == null} ? '写文章' : '编辑文章')}"></head>
+<body>
+
+<header th:replace="~{admin/layout :: header('posts')}"></header>
+
+<main class="admin-page admin-page--narrow">
+
+	<div class="admin-title">
+		<h1 th:text="${id == null} ? '写文章' : '编辑文章'">写文章</h1>
+	</div>
+
+	<!-- id 为空是新建，否则是编辑 -->
+	<form th:action="${id == null} ? @{/admin/posts} : @{/admin/posts/{id}(id=${id})}"
+	      th:object="${form}" method="post" class="form" novalidate>
+
+		<p th:replace="~{admin/layout :: error-summary}"></p>
+
+		<div class="field">
+			<label for="title">标题</label>
+			<input type="text" th:field="*{title}" th:errorclass="is-invalid" maxlength="200">
+			<p class="field__error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">错误提示</p>
+		</div>
+
+		<div class="field">
+			<label for="slug">网址名</label>
+			<input type="text" th:field="*{slug}" th:errorclass="is-invalid" maxlength="100"
+			       placeholder="my-first-post" autocapitalize="none" spellcheck="false">
+			<p class="field__hint">文章的网址会是「/posts/网址名」。只能用小写英文字母、数字和连字符。发布以后不要再改，否则别人收藏的链接会失效。</p>
+			<p class="field__error" th:if="${#fields.hasErrors('slug')}" th:errors="*{slug}">错误提示</p>
+		</div>
+
+		<div class="field">
+			<label for="summary">摘要（可以不填）</label>
+			<textarea th:field="*{summary}" th:errorclass="is-invalid" rows="2" maxlength="500"></textarea>
+			<p class="field__hint">一两句话。会显示在搜索结果和订阅里。</p>
+			<p class="field__error" th:if="${#fields.hasErrors('summary')}" th:errors="*{summary}">错误提示</p>
+		</div>
+
+		<div class="field">
+			<label for="bodyMd">正文</label>
+			<textarea th:field="*{bodyMd}" th:errorclass="is-invalid" rows="22" class="textarea--mono"></textarea>
+			<p class="field__hint">用 Markdown 书写：「## 小标题」「- 列表」「**加粗**」「[文字](网址)」。</p>
+			<p class="field__error" th:if="${#fields.hasErrors('bodyMd')}" th:errors="*{bodyMd}">错误提示</p>
+		</div>
+
+		<div class="field field--short">
+			<label for="status">状态</label>
+			<select th:field="*{status}">
+				<option th:each="option : ${statuses}" th:value="${option}" th:text="${option.label}">草稿</option>
+			</select>
+			<p class="field__hint">草稿只有你能在后台看到；选「已发布」后，所有人都能看到。</p>
+		</div>
+
+		<div class="form__actions">
+			<button type="submit" class="button button--primary">保存</button>
+			<a th:href="@{/admin/posts}">取消</a>
+		</div>
+
+	</form>
+
+</main>
+
+</body>
+</html>

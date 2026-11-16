@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(#{likes.title}, null)}"></head>
+<body>
+
+<header th:replace="~{fragments/layout :: header('likes')}"></header>
+
+<main class="page">
+
+	<h1 class="page-title" th:text="#{likes.title}">喜欢的东西</h1>
+
+	<p class="empty" th:if="${likesByCategory.isEmpty()}" th:text="#{likes.empty}">还没有记录。</p>
+
+	<!-- 按类别分组 -->
+	<section class="block block--first" th:each="group : ${likesByCategory}">
+		<h2 class="label" th:text="${group.key}">类别</h2>
+		<ul class="rows">
+			<li th:each="item : ${group.value}">
+				<div class="row row--top">
+					<div class="row__body">
+						<a class="row__title" th:if="${!#strings.isEmpty(item.url)}" th:href="${item.url}"
+						   rel="noopener" th:text="${item.title}">名字</a>
+						<span class="row__title" th:if="${#strings.isEmpty(item.url)}"
+						      th:text="${item.title}">名字</span>
+						<span class="row__note" th:if="${!#strings.isEmpty(item.note)}"
+						      th:text="${item.note}">一句话感想</span>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</section>
+
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

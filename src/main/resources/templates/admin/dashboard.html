@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head('概览')}"></head>
+<body>
+
+<header th:replace="~{admin/layout :: header('dashboard')}"></header>
+
+<main class="admin-page">
+
+	<div class="admin-title">
+		<h1>概览</h1>
+		<a class="button button--primary" th:href="@{/admin/posts/new}">写文章</a>
+	</div>
+
+	<ul class="stats">
+		<li>
+			<a class="stat" th:href="@{/admin/posts}">
+				<span class="stat__number" th:text="${postCount}">0</span>
+				<span class="stat__label">文章<span th:if="${draftCount > 0}" th:text="${'（其中草稿 ' + draftCount + ' 篇）'}"></span></span>
+			</a>
+		</li>
+		<li>
+			<a class="stat" th:href="@{/admin/now}">
+				<span class="stat__number" th:text="${nowCount}">0</span>
+				<span class="stat__label">近况</span>
+			</a>
+		</li>
+		<li>
+			<a class="stat" th:href="@{/admin/works}">
+				<span class="stat__number" th:text="${workCount}">0</span>
+				<span class="stat__label">作品</span>
+			</a>
+		</li>
+		<li>
+			<a class="stat" th:href="@{/admin/journey}">
+				<span class="stat__number" th:text="${journeyCount}">0</span>
+				<span class="stat__label">历程</span>
+			</a>
+		</li>
+		<li>
+			<a class="stat" th:href="@{/admin/likes}">
+				<span class="stat__number" th:text="${likeCount}">0</span>
+				<span class="stat__label">喜欢的东西</span>
+			</a>
+		</li>
+	</ul>
+
+	<section class="admin-section">
+		<h2>常用操作</h2>
+		<ul class="admin-links">
+			<li><a class="link-arrow" th:href="@{/admin/now/new}">更新近况</a></li>
+			<li><a class="link-arrow" th:href="@{/admin/profile}">修改自我介绍和联系方式</a></li>
+			<li><a class="link-arrow" th:href="@{/}" target="_blank" rel="noopener">查看网站</a></li>
+		</ul>
+	</section>
+
+</main>
+
+</body>
+</html>

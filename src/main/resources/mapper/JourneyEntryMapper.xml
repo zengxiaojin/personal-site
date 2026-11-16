@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jince.site.mapper.JourneyEntryMapper">
+
+	<sql id="columns">
+		id, year, month, title, description, created_at, updated_at
+	</sql>
+
+	<select id="findAll" resultType="JourneyEntry">
+		SELECT <include refid="columns"/>
+		FROM journey_entries
+		ORDER BY year DESC, month DESC NULLS LAST, id DESC
+	</select>
+
+	<select id="findRecent" resultType="JourneyEntry">
+		SELECT <include refid="columns"/>
+		FROM journey_entries
+		ORDER BY year DESC, month DESC NULLS LAST, id DESC
+		LIMIT #{limit}
+	</select>
+
+	<select id="findById" resultType="JourneyEntry">
+		SELECT <include refid="columns"/>
+		FROM journey_entries
+		WHERE id = #{id}
+	</select>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		INSERT INTO journey_entries (year, month, title, description)
+		VALUES (#{year}, #{month}, #{title}, #{description})
+	</insert>
+
+	<update id="update">
+		UPDATE journey_entries
+		SET year = #{year},
+		    month = #{month},
+		    title = #{title},
+		    description = #{description},
+		    updated_at = now()
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM journey_entries
+		WHERE id = #{id}
+	</delete>
+
+</mapper>

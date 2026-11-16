@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head('近况')}"></head>
+<body>
+
+<header th:replace="~{admin/layout :: header('now')}"></header>
+
+<main class="admin-page">
+
+	<div class="admin-title">
+		<h1>近况</h1>
+		<a class="button button--primary" th:href="@{/admin/now/new}">更新近况</a>
+	</div>
+
+	<p th:replace="~{admin/layout :: flash}"></p>
+
+	<p class="admin-note">最新的一条显示在首页，以前的会留在「近况」页作为存档。想记录新的近况时，请点「更新近况」新增一条，而不是修改旧的。</p>
+
+	<p class="empty" th:if="${#lists.isEmpty(entries)}">还没有写近况。</p>
+
+	<div class="table-wrap" th:if="${!#lists.isEmpty(entries)}">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>日期</th>
+					<th>内容</th>
+					<th class="table__actions">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="entry, stat : ${entries}">
+					<td class="table__nowrap">
+						<span th:text="${@dates.date(entry.createdAt)}">2026.11.16</span>
+						<span class="badge badge--on" th:if="${stat.first}">首页显示中</span>
+					</td>
+					<td class="table__pre" th:text="${entry.bodyMd}">近况内容</td>
+					<td class="table__actions">
+						<a th:href="@{/admin/now/{id}/edit(id=${entry.id})}">编辑</a>
+						<form th:action="@{/admin/now/{id}/delete(id=${entry.id})}" method="post" class="inline-form"
+						      onsubmit="return confirm('确定删除这条近况吗？删除后无法恢复。')">
+							<button type="submit" class="button button--text button--danger">删除</button>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+</main>
+
+</body>
+</html>

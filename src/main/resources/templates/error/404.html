@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(#{error.404.title}, #{error.404.body})}"></head>
+<body>
+
+<header th:replace="~{fragments/layout :: header('none')}"></header>
+
+<main class="page">
+
+	<h1 class="page-title" th:text="#{error.404.title}">没有找到这个页面</h1>
+	<p class="empty" th:text="#{error.404.body}">它可能被移走了，或者地址有误。</p>
+	<p class="more"><a class="link-arrow" th:href="@{/}" th:text="#{error.back}">回到首页</a></p>
+
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

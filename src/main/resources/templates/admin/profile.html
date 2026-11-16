@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head('个人信息')}"></head>
+<body>
+
+<header th:replace="~{admin/layout :: header('profile')}"></header>
+
+<main class="admin-page admin-page--narrow">
+
+	<div class="admin-title">
+		<h1>个人信息</h1>
+	</div>
+
+	<p th:replace="~{admin/layout :: flash}"></p>
+
+	<form th:action="@{/admin/profile}" th:object="${form}" method="post" class="form" novalidate>
+
+		<p th:replace="~{admin/layout :: error-summary}"></p>
+
+		<div class="field field--short">
+			<label for="name">名字</label>
+			<input type="text" th:field="*{name}" th:errorclass="is-invalid" maxlength="50">
+			<p class="field__hint">显示在页头、页脚和首页的问候语里。</p>
+			<p class="field__error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">错误提示</p>
+		</div>
+
+		<div class="field">
+			<label for="intro">首页的自我介绍</label>
+			<textarea th:field="*{intro}" th:errorclass="is-invalid" rows="4"></textarea>
+			<p class="field__hint">两三句话，显示在首页「你好，我是……」的下面。</p>
+			<p class="field__error" th:if="${#fields.hasErrors('intro')}" th:errors="*{intro}">错误提示</p>
+		</div>
+
+		<div class="field">
+			<label for="aboutMd">「关于」页的正文</label>
+			<textarea th:field="*{aboutMd}" th:errorclass="is-invalid" rows="16" class="textarea--mono"></textarea>
+			<p class="field__hint">用 Markdown 书写。段落之间空一行。</p>
+			<p class="field__error" th:if="${#fields.hasErrors('aboutMd')}" th:errors="*{aboutMd}">错误提示</p>
+		</div>
+
+		<div class="field">
+			<label for="email">公开的联系邮箱（可以不填）</label>
+			<input type="email" th:field="*{email}" th:errorclass="is-invalid" maxlength="255" placeholder="name@example.com">
+			<p class="field__hint">填写后会公开显示在页脚和「关于」页，任何人都能看到。</p>
+			<p class="field__error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">错误提示</p>
+		</div>
+
+		<div class="field">
+			<label for="githubUrl">GitHub 主页的网址（可以不填）</label>
+			<input type="url" th:field="*{githubUrl}" th:errorclass="is-invalid" maxlength="255" placeholder="https://github.com/">
+			<p class="field__error" th:if="${#fields.hasErrors('githubUrl')}" th:errors="*{githubUrl}">错误提示</p>
+		</div>
+
+		<div class="form__actions">
+			<button type="submit" class="button button--primary">保存</button>
+		</div>
+
+	</form>
+
+</main>
+
+</body>
+</html>

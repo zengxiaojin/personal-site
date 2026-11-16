@@ -1,0 +1,10 @@
+# 打包镜像时不需要的文件
+target/
+.git/
+.github/
+.idea/
+.claude/
+.vscode/
+*.iml
+compose.yaml
+内容草稿.md

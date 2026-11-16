@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head('作品')}"></head>
+<body>
+
+<header th:replace="~{admin/layout :: header('works')}"></header>
+
+<main class="admin-page">
+
+	<div class="admin-title">
+		<h1>作品</h1>
+		<a class="button button--primary" th:href="@{/admin/works/new}">添加作品</a>
+	</div>
+
+	<p th:replace="~{admin/layout :: flash}"></p>
+
+	<p class="empty" th:if="${#lists.isEmpty(works)}">还没有作品。</p>
+
+	<div class="table-wrap" th:if="${!#lists.isEmpty(works)}">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>名字</th>
+					<th>年份</th>
+					<th>排序</th>
+					<th class="table__actions">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="work : ${works}">
+					<td>
+						<a th:href="@{/admin/works/{id}/edit(id=${work.id})}" th:text="${work.title}">作品名</a>
+						<span class="table__sub" th:text="${work.summary}">一句话说明</span>
+					</td>
+					<td th:text="${work.year}">2026</td>
+					<td th:text="${work.sortOrder}">0</td>
+					<td class="table__actions">
+						<a th:href="@{/works/{slug}(slug=${work.slug})}" target="_blank" rel="noopener">查看</a>
+						<a th:href="@{/admin/works/{id}/edit(id=${work.id})}">编辑</a>
+						<form th:action="@{/admin/works/{id}/delete(id=${work.id})}" method="post" class="inline-form"
+						      onsubmit="return confirm('确定删除这个作品吗？删除后无法恢复。')">
+							<button type="submit" class="button button--text button--danger">删除</button>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+</main>
+
+</body>
+</html>

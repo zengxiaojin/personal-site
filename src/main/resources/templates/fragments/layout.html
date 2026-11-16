@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--
+  公开页面共用的部件。每个页面用 th:replace 把它们嵌进去。
+-->
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+<!--
+  head：pageTitle 是这一页的标题（首页传 null），description 是给搜索引擎看的简介（传 null 时用自我介绍）
+-->
+<head th:fragment="head(pageTitle, description)">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title th:text="${pageTitle == null} ? ${profile.name} : ${pageTitle + ' · ' + profile.name}">曾进</title>
+	<meta name="description" th:content="${description == null} ? ${profile.intro} : ${description}">
+	<meta name="color-scheme" content="light dark">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" th:content="${profile.name}">
+	<meta property="og:title" th:content="${pageTitle == null} ? ${profile.name} : ${pageTitle}">
+	<meta property="og:description" th:content="${description == null} ? ${profile.intro} : ${description}">
+	<link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+	<link rel="alternate" type="application/atom+xml" th:href="@{/feed.xml}" th:title="${profile.name}">
+	<link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+
+<body>
+
+<!-- 页头：active 是当前所在的栏目，对应的导航文字会加深 -->
+<header th:fragment="header(active)" class="site-header">
+	<nav class="site-header__inner" th:aria-label="#{nav.label}">
+		<a class="site-header__name" th:href="@{/}" th:text="${profile.name}">曾进</a>
+		<ul class="site-header__nav">
+			<li><a th:href="@{/posts}" th:text="#{nav.posts}"
+			       th:classappend="${active == 'posts'} ? 'is-active'"
+			       th:aria-current="${active == 'posts'} ? 'page'">文章</a></li>
+			<li><a th:href="@{/works}" th:text="#{nav.works}"
+			       th:classappend="${active == 'works'} ? 'is-active'"
+			       th:aria-current="${active == 'works'} ? 'page'">作品</a></li>
+			<li><a th:href="@{/journey}" th:text="#{nav.journey}"
+			       th:classappend="${active == 'journey'} ? 'is-active'"
+			       th:aria-current="${active == 'journey'} ? 'page'">历程</a></li>
+			<li><a th:href="@{/likes}" th:text="#{nav.likes}"
+			       th:classappend="${active == 'likes'} ? 'is-active'"
+			       th:aria-current="${active == 'likes'} ? 'page'">喜欢</a></li>
+			<li><a th:href="@{/about}" th:text="#{nav.about}"
+			       th:classappend="${active == 'about'} ? 'is-active'"
+			       th:aria-current="${active == 'about'} ? 'page'">关于</a></li>
+		</ul>
+	</nav>
+</header>
+
+<!-- 页脚 -->
+<footer th:fragment="footer" class="site-footer">
+	<div class="site-footer__inner">
+		<ul class="site-footer__links">
+			<li th:if="${!#strings.isEmpty(profile.githubUrl)}">
+				<a th:href="${profile.githubUrl}" rel="me noopener">GitHub</a>
+			</li>
+			<li th:if="${!#strings.isEmpty(profile.email)}">
+				<a th:href="${'mailto:' + profile.email}" th:text="#{footer.mail}">邮件</a>
+			</li>
+			<li><a th:href="@{/feed.xml}" th:text="#{footer.rss}">订阅</a></li>
+		</ul>
+		<p>© <span th:text="${@dates.currentYear()}">2026</span> <span th:text="${profile.name}">曾进</span></p>
+	</div>
+</footer>
+
+</body>
+</html>

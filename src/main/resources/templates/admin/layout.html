@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!--
+  管理后台共用的部件。
+-->
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head(title)">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="robots" content="noindex, nofollow">
+	<meta name="color-scheme" content="light dark">
+	<title th:text="${title + ' · 管理后台'}">管理后台</title>
+	<link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+	<link rel="stylesheet" th:href="@{/css/main.css}">
+	<link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+
+<body>
+
+<!-- 页头：active 是当前所在的栏目 -->
+<header th:fragment="header(active)" class="admin-header">
+	<div class="admin-header__inner">
+		<a class="admin-header__name" th:href="@{/admin}">管理后台</a>
+		<nav aria-label="后台导航">
+			<ul class="admin-nav">
+				<li><a th:href="@{/admin/posts}" th:classappend="${active == 'posts'} ? 'is-active'">文章</a></li>
+				<li><a th:href="@{/admin/now}" th:classappend="${active == 'now'} ? 'is-active'">近况</a></li>
+				<li><a th:href="@{/admin/works}" th:classappend="${active == 'works'} ? 'is-active'">作品</a></li>
+				<li><a th:href="@{/admin/journey}" th:classappend="${active == 'journey'} ? 'is-active'">历程</a></li>
+				<li><a th:href="@{/admin/likes}" th:classappend="${active == 'likes'} ? 'is-active'">喜欢</a></li>
+				<li><a th:href="@{/admin/profile}" th:classappend="${active == 'profile'} ? 'is-active'">个人信息</a></li>
+			</ul>
+		</nav>
+		<div class="admin-header__actions">
+			<a th:href="@{/}" target="_blank" rel="noopener">查看网站</a>
+			<form th:action="@{/admin/logout}" method="post">
+				<button type="submit" class="button button--text">退出</button>
+			</form>
+		</div>
+	</div>
+</header>
+
+<!-- 保存、删除之后显示的提示 -->
+<p th:fragment="flash" th:if="${message != null}" class="flash" role="status" th:text="${message}">已保存。</p>
+
+<!-- 表单里有填写错误时，显示在表单最上方的提示 -->
+<p th:fragment="error-summary" th:if="${#fields.hasAnyErrors()}" class="flash flash--error" role="alert">
+	有内容需要修改，请看下面的提示。
+</p>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(#{works.title}, null)}"></head>
+<body>
+
+<header th:replace="~{fragments/layout :: header('works')}"></header>
+
+<main class="page">
+
+	<h1 class="page-title" th:text="#{works.title}">作品</h1>
+
+	<p class="empty" th:if="${#lists.isEmpty(works)}" th:text="#{works.empty}">还没有作品。</p>
+
+	<ul class="cards" th:if="${!#lists.isEmpty(works)}">
+		<li th:each="work : ${works}">
+			<a class="card" th:href="@{/works/{slug}(slug=${work.slug})}">
+				<span class="card__title" th:text="${work.title}">作品名</span>
+				<span class="card__text" th:text="${work.summary}">一句话说明</span>
+				<span class="card__meta" th:text="${work.year}">2026</span>
+			</a>
+		</li>
+	</ul>
+
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+
+</body>
+</html>

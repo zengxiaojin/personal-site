@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{admin/layout :: head('登录')}"></head>
+<body>
+
+<main class="login">
+
+	<h1 class="login__title">管理后台</h1>
+
+	<p class="flash flash--error" role="alert" th:if="${param.error}">用户名或密码不正确。</p>
+
+	<form th:action="@{/admin/login}" method="post" class="form">
+		<div class="field">
+			<label for="username">用户名</label>
+			<input type="text" id="username" name="username" autocomplete="username" required autofocus>
+		</div>
+		<div class="field">
+			<label for="password">密码</label>
+			<input type="password" id="password" name="password" autocomplete="current-password" required>
+		</div>
+		<div class="form__actions">
+			<button type="submit" class="button button--primary">登录</button>
+			<a th:href="@{/}">回到网站</a>
+		</div>
+	</form>
+
+</main>
+
+</body>
+</html>
